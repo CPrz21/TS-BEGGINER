@@ -49,7 +49,7 @@
       "terminal.ansiBrightYellow": "#ffffff"
     },
 
-    "workbench.statusBar.visible": false,
+    // "workbench.statusBar.visible": false,
   
     "window.zoomLevel": 0
      
