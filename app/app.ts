@@ -1,47 +1,21 @@
-const defaultName: string = "MultiMath Player";
-function startGame() {
-  // starting a new game
-  let playerName: string | undefined = getInputValue('playername');
-  logPlayer(playerName);
+/// <reference path="player.ts" />
+/// <reference path="game.ts" />
 
-  postScore(100, playerName);
-  postScore(-5, playerName);
-}
+let newGame: Game;
 
-function logPlayer(name: string= defaultName): void{
-  console.log(`New game starting for player: ${name}`)
-}
+// add click handler to the start game button
+document.getElementById('startGame')!.addEventListener('click', () =>{
+  const player: Player = new Player();
+  player.name = Utility.getInputValue('playername');
 
-function getInputValue(elementId: string): string | undefined {
-  const inputElement: HTMLInputElement = <HTMLInputElement>document.getElementById(elementId);
-  // const inputElement: HTMLInputElement = document.getElementById(elementId) as HTMLInputElement;
-  if (inputElement.value === '') {
-    return undefined;
-  } else {
-    return inputElement.value;
-  }
-}
+  const problemCount: number = Number(Utility.getInputValue('problemCount'));
+  const factor: number = Number(Utility.getInputValue('factor'));
 
-function postScore(score: number, playerName: string= defaultName): void {
+  newGame = new Game(player, problemCount, factor);
+  newGame.displayGame();
+})
 
-  let logger: (value: string) => void;
-
-  if(score < 0) {
-    logger = logError;
-  }else{
-    logger = logMessage;
-  }
-
-  const scoreElement: HTMLElement | null = document.getElementById('postedScores');
-  scoreElement!.innerText = `${score} - ${playerName}`;
-
-  logger(`Score: ${score}`);
-}
-
-document.getElementById('startGame')!.addEventListener('click', startGame);
-
-const logMessage = (message: string): void =>console.log(message);
-
-function logError (err: string): void {
-  console.error(err);
-}
+// add click handler to the calculate score button
+document.getElementById('calculate')!.addEventListener('click', ()=>{
+  newGame.calculateScore();
+})
